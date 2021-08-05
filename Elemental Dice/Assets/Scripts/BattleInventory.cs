@@ -4,18 +4,6 @@ using UnityEngine;
 
 public class BattleInventory : MonoBehaviour
 {
-    public int inventorySize = 2;
-    private const int STARTING_SIZE = 2; // move somewhere else
-    private const int MAX_SIZE = 8; // move somewhere else
-
-    public enum InvType
-    {
-        Inventory,
-        Fight,
-        Round,
-    }
-
-    private DiceKit inventoryDice = new DiceKit(); // move somewhere else
     private DiceKit battleDice = new DiceKit();
     private DiceKit roundDice = new DiceKit();
 
