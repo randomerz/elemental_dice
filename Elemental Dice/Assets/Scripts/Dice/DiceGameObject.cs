@@ -17,7 +17,7 @@ public class DiceGameObject : MonoBehaviour
     {
         // temporarily here, TODO make a dice factory
         myDice = new Dice(initDiceNumberType, initDiceTraits, this);
-        PlayerConsts.GetPlayerInventory().AddDice(myDice, DiceInventory.InvType.Inventory);
+        PlayerConsts.GetPlayerInventory().AddBattleDice(myDice);
     }
     
     void Update()

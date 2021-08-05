@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class DiceRoller : MonoBehaviour
 {
-    public DiceInventory diceInventory;
+    public BattleInventory battleInventory;
 
     // Start is called before the first frame update
     void Start()
     {
-        diceInventory.ResetFightDice();
-        diceInventory.PrintInventoryTraits();
+        //battleInventory.ResetFightDice();
+        battleInventory.PrintInventoryTraits();
     }
 
     // Update is called once per frame
@@ -21,7 +21,7 @@ public class DiceRoller : MonoBehaviour
 
     public void StartRoll()
     {
-        List<Dice> diceToRoll = diceInventory.GetNewRoundDice();
+        List<Dice> diceToRoll = battleInventory.GetNewRoundDice();
         Debug.Log("Rolling " + diceToRoll.Count + " dice...");
 
         foreach (Dice dice in diceToRoll)
@@ -30,14 +30,14 @@ public class DiceRoller : MonoBehaviour
             dice.GetDiceGameObject().RollSprite();
         }
 
-        DiceTraitApplier.ApplyOnRollTraits(diceToRoll, diceInventory);
+        DiceTraitApplier.ApplyOnRollTraits(diceToRoll, battleInventory);
     }
 
     public void StartAttack()
     {
-        List<Dice> diceToSum = diceInventory.GetCurrentRoundDice();
+        List<Dice> diceToSum = battleInventory.GetCurrentRoundDice();
 
-        DiceTraitApplier.ApplyOnAttackTraits(diceToSum, diceInventory);
+        DiceTraitApplier.ApplyOnAttackTraits(diceToSum, battleInventory);
 
         int attackSum = 0;
         foreach (Dice dice in diceToSum)

@@ -13,7 +13,7 @@ public class DiceTraitApplier : MonoBehaviour
         _instance = this;
     }
 
-    public static void ApplyOnRollTraits(List<Dice> dice, DiceInventory diceInventory)
+    public static void ApplyOnRollTraits(List<Dice> dice, BattleInventory diceInventory)
     {
         foreach (DiceTrait trait in _instance.diceTraits)
         {
@@ -21,7 +21,7 @@ public class DiceTraitApplier : MonoBehaviour
         }
     }
 
-    public static void ApplyOnAttackTraits(List<Dice> dice, DiceInventory diceInventory)
+    public static void ApplyOnAttackTraits(List<Dice> dice, BattleInventory diceInventory)
     {
         foreach (DiceTrait trait in _instance.diceTraits)
         {

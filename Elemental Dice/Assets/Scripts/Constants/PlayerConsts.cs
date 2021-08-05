@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerConsts : MonoBehaviour
 {
-    public DiceInventory playerDiceInventory;
+    public BattleInventory playerDiceInventory;
 
     private static PlayerConsts _instance;
 
@@ -19,7 +19,7 @@ public class PlayerConsts : MonoBehaviour
         _instance = this;
     }
 
-    public static DiceInventory GetPlayerInventory()
+    public static BattleInventory GetPlayerInventory()
     {
         return _instance.playerDiceInventory;
     }
