@@ -7,6 +7,8 @@ public class DiceDragDrop : DragDrop
     public GameObject diceGO;
     public Dice dice;
 
+    public int inventoryIndex = -1;
+
     private void Awake()
     {
         if (diceGO != null)

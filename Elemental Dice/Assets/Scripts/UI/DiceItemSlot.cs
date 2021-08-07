@@ -9,6 +9,10 @@ public class DiceItemSlot : ItemSlot
 
     public override void OnDrop(PointerEventData eventData)
     {
-        base.OnDrop(eventData);
+        if (eventData.pointerDrag != null)
+        {
+            eventData.pointerDrag.GetComponent<RectTransform>().position =
+                GetComponent<RectTransform>().position;
+        }
     }
 }
