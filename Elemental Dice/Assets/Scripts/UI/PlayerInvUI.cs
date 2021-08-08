@@ -11,10 +11,16 @@ public class PlayerInvUI : MonoBehaviour
     private bool didInit = false;
     private static PlayerInvUI _instance;
 
+    private static DiceDragDrop draggedDice;
+
+    private static DiceDragDrop[] ddDiceTrays = new DiceDragDrop[8];
+    private static DiceDragDrop[] ddDicePouches = new DiceDragDrop[16];
+
     [Header("References")]
     public PlayerInventory pInv;
-    public DiceDragDrop[] diceTraySlots = new DiceDragDrop[8];
-    public DiceDragDrop[] dicePouchSlots = new DiceDragDrop[16];
+
+    public DiceItemSlot[] diceItemTraySlots;
+    public DiceItemSlot[] diceItemPouchSlots;
 
     private void Awake()
     {
@@ -77,7 +83,7 @@ public class PlayerInvUI : MonoBehaviour
     {
         for (int i = 0; i < pInv.inventorySize * 2; i++)
         {
-            if (dicePouchSlots[i] == null)
+            if (ddDicePouches[i] == null)
             {
                 SetDice(ddDice, i + 8);
                 return;
@@ -86,7 +92,7 @@ public class PlayerInvUI : MonoBehaviour
 
         for (int i = 0; i < pInv.inventorySize; i++)
         {
-            if (diceTraySlots[i] == null)
+            if (ddDiceTrays[i] == null)
             {
                 SetDice(ddDice, i);
                 return;
@@ -94,48 +100,104 @@ public class PlayerInvUI : MonoBehaviour
         }
     }
 
-    public static void DropDice(DiceDragDrop awayDDDice, DiceDragDrop homeDDDice, int index)
+    public static void BeginDrag(DiceDragDrop ddDice)
     {
-        _instance._DropDice(awayDDDice, homeDDDice, index);
+        draggedDice = ddDice;
     }
 
-    private void _DropDice(DiceDragDrop awayDDDice, DiceDragDrop homeDDDice, int index)
+    public static void EndDrag(DiceDragDrop ddDice)
+    {
+        if (draggedDice != null)
+        {
+            ResetDice(draggedDice);
+            draggedDice = null;
+        }
+    }
+
+    public static bool DropDice(DiceDragDrop awayDDDice, int index)
+    {
+        return _instance._DropDice(awayDDDice, index);
+    }
+
+    private bool _DropDice(DiceDragDrop awayDDDice, int index)
     {
         if (awayDDDice == null)
         {
             Debug.LogError("Can't drop null into dice spot!");
-            return;
+            return false;
         }
 
+        Debug.Log("trying to set " + index + " to " + awayDDDice);
         if (!_CanSetDice(index))
         {
-            return;
+            return false;
         }
 
-        if (awayDDDice.inventoryIndex == -1)
+        if (awayDDDice.inventoryIndex != -1)
         {
-
+            if (index < 8)
+            {
+                SetDice(ddDiceTrays[index], awayDDDice.inventoryIndex);
+            }
+            else
+            {
+                SetDice(ddDicePouches[index - 8], awayDDDice.inventoryIndex);
+            }
         }
-        SetDice(homeDDDice, awayDDDice.inventoryIndex);
         SetDice(awayDDDice, index);
+
+        draggedDice = null;
+
+        return true;
     }
 
 
 
     public static void SetDice(DiceDragDrop ddDice, int index)
     {
-        if (index < 8)
+        if (ddDice == null)
         {
-            ddDice.inventoryIndex = index;
-
-            _instance.diceTraySlots[index] = ddDice;
+            if (index < 8)
+            {
+                ddDiceTrays[index] = ddDice;
+            }
+            else
+            {
+                ddDicePouches[index - 8] = ddDice;
+            }
         }
         else
         {
-            ddDice.inventoryIndex = index;
+            if (index < 8)
+            {
+                ddDice.inventoryIndex = index;
 
-            index -= 8;
-            _instance.dicePouchSlots[index] = ddDice;
+                ddDiceTrays[index] = ddDice;
+                ddDice.GetComponent<RectTransform>().position =
+                    _instance.diceItemTraySlots[index].GetComponent<RectTransform>().position;
+            }
+            else
+            {
+                ddDice.inventoryIndex = index;
+
+                index -= 8;
+                ddDicePouches[index] = ddDice;
+                ddDice.GetComponent<RectTransform>().position =
+                    _instance.diceItemPouchSlots[index].GetComponent<RectTransform>().position;
+            }
+        }
+    }
+
+    public static void ResetDice(DiceDragDrop ddDice)
+    {
+        Debug.Log("reseting " + ddDice + (ddDice == null));
+        if (!_instance._CanSetDice(ddDice.inventoryIndex))
+        {
+            Debug.LogError("Dice index is not valid!");
+        }
+        else
+        {
+            SetDice(ddDice, ddDice.inventoryIndex);
         }
     }
 }

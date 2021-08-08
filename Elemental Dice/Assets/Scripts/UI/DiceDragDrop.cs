@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class DiceDragDrop : DragDrop
 {
@@ -9,8 +10,9 @@ public class DiceDragDrop : DragDrop
 
     public int inventoryIndex = -1;
 
-    private void Awake()
+    public override void Awake()
     {
+        base.Awake();
         if (diceGO != null)
         {
             dice = diceGO.GetComponent<Dice>();
@@ -27,5 +29,19 @@ public class DiceDragDrop : DragDrop
     {
         this.diceGO = diceGO;
         dice = diceGO.GetComponent<Dice>();
+    }
+
+    public override void OnBeginDrag(PointerEventData eventData)
+    {
+        base.OnBeginDrag(eventData);
+
+        PlayerInvUI.BeginDrag(this);
+    }
+
+    public override void OnEndDrag(PointerEventData eventData)
+    {
+        base.OnEndDrag(eventData);
+
+        PlayerInvUI.EndDrag(this);
     }
 }

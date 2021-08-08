@@ -11,8 +11,20 @@ public class DiceItemSlot : ItemSlot
     {
         if (eventData.pointerDrag != null)
         {
-            eventData.pointerDrag.GetComponent<RectTransform>().position =
-                GetComponent<RectTransform>().position;
+            DiceDragDrop ddDice = eventData.pointerDrag.GetComponent<DiceDragDrop>();
+            if (ddDice != null)
+            {
+                if (PlayerInvUI.DropDice(ddDice, slotId))
+                {
+                    eventData.pointerDrag.GetComponent<RectTransform>().position =
+                        GetComponent<RectTransform>().position;
+                }
+                else
+                {
+                    PlayerInvUI.ResetDice(ddDice);
+                }
+            }
+
         }
     }
 }
