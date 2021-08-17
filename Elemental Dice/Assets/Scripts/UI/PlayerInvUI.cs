@@ -35,7 +35,11 @@ public class PlayerInvUI : MonoBehaviour
         didInit = true;
 
         _instance = this;
+
+        UpdateSizeDisplay();
     }
+
+    #region Dice
 
     public static bool CanAddDice()
     {
@@ -198,6 +202,25 @@ public class PlayerInvUI : MonoBehaviour
         else
         {
             SetDice(ddDice, ddDice.inventoryIndex);
+        }
+    }
+
+    #endregion
+
+    public static void UpdateSizeDisplay()
+    {
+        for (int i = 0; i < _instance.pInv.inventorySize; i++)
+        {
+            _instance.diceItemTraySlots[i].SetColor(Color.white);
+            _instance.diceItemPouchSlots[2 * i].SetColor(Color.white);
+            _instance.diceItemPouchSlots[2 * i + 1].SetColor(Color.white);
+        }
+
+        for (int i = _instance.pInv.inventorySize; i < _instance.diceItemTraySlots.Length; i++)
+        {
+            _instance.diceItemTraySlots[i].SetColor(Color.gray);
+            _instance.diceItemPouchSlots[2 * i].SetColor(Color.gray);
+            _instance.diceItemPouchSlots[2 * i + 1].SetColor(Color.gray);
         }
     }
 }

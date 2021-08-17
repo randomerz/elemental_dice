@@ -2,10 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class DiceItemSlot : ItemSlot
 {
     public int slotId = -1;
+
+    public Image image;
 
     public override void OnDrop(PointerEventData eventData)
     {
@@ -26,5 +29,10 @@ public class DiceItemSlot : ItemSlot
             }
 
         }
+    }
+
+    public void SetColor(Color c)
+    {
+        image.color = c;
     }
 }
